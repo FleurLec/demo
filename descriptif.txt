@@ -1,0 +1,40 @@
+
+
+
+%macro freqcorel(tabin, cible, nbvar, var, exclus);
+
+Appel de la macro  : 
+
+tabin : nom de la table en entrée
+cible : colonne contenant la variable binaire à discriminer
+nbvar : [optionnel] nombre de variable quali dont on cherche a tester les correlations
+var   : [optionnel] liste des variables quali a tester
+exclus: [optionnel] liste des variables a exclure de l etude. N'est pas utilisé quand *var* est renseigné
+
+En sortie : 3 tables : 
+Vcramer qui contient le V de Cramer entre chaque variable de *var* et la *cible*
+Vcramer2a2 qui contient les V de Cramer entre variables 2 a 2
+Freq qui fournit des elements de volumetries
+
+
+Exemple d'appel : 
+
+
+data INPUT;
+Z_var1=1;Z_var2=3;txresil=1;nmcli=1;output;
+Z_var1=10;Z_var2=3;txresil=1;nmcli=2;output;
+Z_var1=10;Z_var2=4;txresil=1;nmcli=3;output;
+Z_var1=1;Z_var2=3;txresil=1;nmcli=4;output;
+Z_var1=1;Z_var2=3;txresil=1;nmcli=5;output;
+Z_var1=10;Z_var2=4;txresil=1;nmcli=6;output;
+
+Z_var1=10;Z_var2=10;txresil=0;nmcli=7;output;
+Z_var1=1;Z_var2=10;txresil=0;nmcli=8;output;
+Z_var1=1;Z_var2=10;txresil=0;nmcli=9;output;
+Z_var1=10;Z_var2=4;txresil=0;nmcli=10;output;
+run;
+
+
+%freqcorel(INPUT, txresil,,, NMCLI NMCNT);
+%freqcorel(INPUT, txresil, 2, Z_var1 Z_var2,);
+
